@@ -5,10 +5,13 @@ const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(async (ctx) => {
-  const telegramId = ctx.from.id;
+  const chatId = String(ctx.chat.id);
   const username = ctx.from.username || '';
-  const firstName = ctx.from.first_name || '';
-  const lastName = ctx.from.last_name || '';
+
+  const connectionCode = `TG-${Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase()}`;
 
   await fetch(process.env.POWER_AUTOMATE_URL, {
     method: 'POST',
@@ -16,15 +19,14 @@ bot.start(async (ctx) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      telegramId,
-      username,
-      firstName,
-      lastName
+      connectionCode,
+      chatId,
+      username
     })
   });
 
   await ctx.reply(
-    'Telegram підключено.\n\nТепер заповніть форму реєстрації та оберіть Telegram як бажаний канал сповіщень.'
+    `Telegram підключено.\n\nВаш код підключення:\n${connectionCode}\n\nСкопіюйте цей код у форму реєстрації.`
   );
 });
 
