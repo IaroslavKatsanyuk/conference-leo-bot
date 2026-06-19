@@ -26,7 +26,18 @@ bot.start(async (ctx) => {
   });
 
   await ctx.reply(
-    `Telegram підключено.\n\nВаш код підключення:\n${connectionCode}\n\nСкопіюйте цей код у форму реєстрації.`
+    `Telegram підключено.
+
+Ваш код підключення:
+
+\`\`\`
+${connectionCode}
+\`\`\`
+
+Скопіюйте цей код у форму реєстрації.`,
+    {
+      parse_mode: 'Markdown'
+    }
   );
 });
 
